@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kate - the Game</title>
+	<style type="text/css">
+	.images{
+		text-align: center;
+
+	}
+	#kateImage {
+		
+		float:left;
+
+	}
+	#danielImage{
+		
+		float:right;
+	}
+	#heart{
+		display: inline-block;
+		width: 50px;
+		margin-top: 50px;
+
+	}
+	.questions{
+		width: 300px;
+	}
+	.questionSection {
+		clear:both;
+	}
+	#errorBox {
+		color: red;	
+	}
+	.imageBox{
+		display: inline-block;
+		
+	}
+	.heartShapeBox{
+		width: 50px;
+	}
+	</style>
+
+	
+</head>
+<body>
+<div class="images" >
+<div class="imageBox">	<img id="danielImage" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1wvkQ6v-extDTktPO5yEBZanLv5pY8lgld3xLLohkm3fw8gssLDY0QQ"  width="130px"/>
+	</div>
+<div class="imageBox heartShapeBox">	
+	<img id="heart" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn1a6T1tRCUhYMnNzcxiTwspkjLXB6QeSwKYZDNCUDDtpfzpH70symXRw">
+	</div>
+<div class="imageBox">
+	<img id="kateImage" src="http://www2.warwick.ac.uk/fac/cross_fac/iatl/activities/projects/globalshakespeare/pgstudy/whatourstudentssay/kate_woff.jpg" width="120px"/>
+</div>
+</div>
+
+<div class = "questionSection">
+	<div >
+		<h1 id="firstQuestion">Hi</h1>
+	</div>
+	<input id="answerBox" value="please type your answer here Kate"/>
+	<button id="submitButton1">Submit Answer Please</button>
+</div>
+<div id="errorBox">
+	
+</div>
+
+
+</body>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script type="text/javascript">
+
+	var question = function(question, correctAnswer){
+		this.question = question;
+		this.correctAnswer = correctAnswer;
+	};
+	var questionsArray = [
+			new question("What is your name?","kate"),
+			new question("What is my name?", "daniel"),
+			new question("Where are we next meeting?", "brussels"),
+			new question("What are you supposed to be reading?", "infinite jest")
+		];
+	var pictureDistance = 10;
+	var originalHeartMargin = 25;
+	var heartMargin = 25;
+	var movePicturesCloser = function(){
+		heartMargin -= originalHeartMargin*(1/(questionsArray.length+1));
+		$('.heartShapeBox').css('margin-left',heartMargin+"%");
+		$('.heartShapeBox').css('margin-right',heartMargin+"%");
+	};
+
+
+	var completionAnimations = function(){
+		$('#errorBox')
+		$('.heartShapeBox').hide('explode')
+	};
+	
+
+	var displayQuestion = function(){
+		if(i<questionsArray.length){
+			$("#firstQuestion").html(questionsArray[i].question);
+		}else{
+			completionAnimations();
+		}
+	};
+		
+	
+	var kateWidthAttr = $("#kateImage").css('width');
+	var kateWidth = parseInt(kateWidthAttr.substring(0,kateWidthAttr.length-2));
+	console.log(kateWidth)
+	var submitAnswer = function(submittedAnswer, correctAnswer){
+		if(submittedAnswer === correctAnswer){
+			movePicturesCloser();
+			i++;
+			displayQuestion();
+		}else{
+			kateWidth = Math.round(kateWidth*0.9);
+			$("#kateImage").css("width",kateWidth+"px");
+			$("#errorBox").html("Wrong answer, you have been punished")
+
+		}
+
+		
+	};
+
+	var i = 0;
+
+	$(document).ready(function(){
+		$('#answerBox').click(function(	){
+			$('#answerBox').val("");
+		});
+		$('.heartShapeBox').css('margin-left',heartMargin+"%");
+		$('.heartShapeBox').css('margin-right',heartMargin+"%");
+
+		movePicturesCloser();
+		displayQuestion() ;
+			
+		$("#submitButton1").click(function(){
+	
+			submitAnswer($("#answerBox").val().toLowerCase(),questionsArray[i].correctAnswer)
+			
+		});
+	});
+	
+
+	</script>
+</html>
